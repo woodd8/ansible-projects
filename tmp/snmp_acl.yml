@@ -1,0 +1,45 @@
+---
+- name: SNMP ACL Update Playbook
+  hosts: all 
+  gather_facts: false
+  connection: local
+  vars_prompt:
+    - name: "username_prompt"
+      prompt: "Username"
+      private: no
+    - name: "password_prompt"
+      prompt: "Password"
+  vars:
+    creds:
+      username: "{{username_prompt}}"
+      password: "{{password_prompt}}"
+
+  tasks:
+    - name: Setting SNMP ACL for IOS
+      when: os == "ios"
+      ios_config:
+        timeout: 60
+        provider: "{{creds}}"
+        parents: ip access-list extended SNMP-NETWORK-TOOLS-HOSTS
+        lines:
+         - 10 permit udp host 10.40.76.25 any eq snmp
+        save_when: modified
+
+    - name: Setting SNMP ACL for NXOS
+      when: os == "nxos" 
+      nxos_config:
+        timeout: 60
+        provider: "{{creds}}"
+        parents: ip access-list SNMP-NETWORK-TOOLS-HOSTS
+        lines:
+         - 10 permit udp host 10.40.76.25 any eq snmp 
+        save_when: modified
+
+    - name: Setting SNMP ACL for IOS-XR
+      when: os == "iosxr"
+      iosxr_config:
+        timeout: 60
+        provider: "{{creds}}"
+        parents: ipv4 access-list SNMP-NETWORK-TOOLS-HOSTS
+        lines:
+          - 10 permit udp host 10.40.76.25 any eq snmp

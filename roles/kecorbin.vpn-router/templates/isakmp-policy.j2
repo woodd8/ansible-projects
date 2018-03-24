@@ -1,4 +1,0 @@
-crypto isakmp policy {{ item.seq }}
- encr {{ item.isakmp_encr }}
- authentication {{ item.isakmp_auth }}
- group {{ item.isakmp_group | default(2) }}

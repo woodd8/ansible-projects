@@ -1,0 +1,26 @@
+---
+- name: Version Check
+  gather_facts: false
+  hosts: routers 
+  connection: local
+  vars_files:
+    - creds.yml
+
+  vars:
+    creds:      
+      username: "{{username}}"
+      password: "{{password}}"
+ 
+
+  tasks:
+
+    - name: run show version
+      ios_command:
+        provider: "{{creds}}"
+        commands: show version
+      register: version
+
+    - name: save output to/etc/ansible/backups
+      copy:
+        content: "{{ version.stdout[0] }}"
+        dest: "/etc/ansible/backups/{{ inventory_hostname }}_version.txt"

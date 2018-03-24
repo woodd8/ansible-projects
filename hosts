@@ -1,0 +1,17 @@
+[IOS:vars]
+os=ios
+
+[IOS]
+R1 ansible_host=192.168.0.251
+
+[NXOS:vars]
+os=nxos
+
+[NXOS]
+SW1 ansible_host=192.168.0.252
+
+[IOSXR:vars]
+os=iosxr
+
+[IOSXR]
+R2 ansible_host=192.168.0.253

@@ -1,0 +1,31 @@
+---
+- name: Version Check
+  gather_facts: false
+  hosts: routers 
+  connection: local
+
+  vars_prompt:
+    - name: "username_prompt"
+      prompt: "Username"
+      private: no
+    - name: "password_prompt"
+      prompt: "Password"
+
+  vars:
+    creds:      
+      username: "{{username_prompt}}"
+      password: "{{password_prompt}}"
+ 
+
+  tasks:
+
+    - name: run show version
+      ios_command:
+        provider: "{{creds}}"
+        commands: show version
+      register: version
+
+    - name: save output to/etc/ansible/backups
+      copy:
+        content: "{{ version.stdout[0] }}"
+        dest: "/etc/ansible/backups/{{ inventory_hostname }}_version.txt"

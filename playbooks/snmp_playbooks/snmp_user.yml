@@ -1,0 +1,33 @@
+---
+- name: SNMP User Update
+  gather_facts: false
+  hosts: switches 
+  connection: local
+
+# The vars_prompt variable makes it so that you can manually enter admin/password. Mainly did this to avoid password files for now.
+
+  vars_prompt:
+    - name: "username_prompt"
+      prompt: "Username"
+      private: no
+    - name: "password_prompt"
+      prompt: "Password"
+
+  vars:
+    creds:      
+      username: "{{username_prompt}}"
+      password: "{{password_prompt}}"
+ 
+# I created a file for now that stores the SNMP settings for the observium user. This seemed like the easier option.
+
+  vars_files:
+    - snmp_creds.yml
+
+  tasks:
+
+    - name: setting snmp user for observium
+      nxos_config:
+        provider: "{{creds}}"
+        lines:
+         - snmp-server user observium auth {{item.auth}} {{item.auth_phrase}} priv {{item.priv}} {{item.priv_phrase}}
+      with_items: "{{observium}}"

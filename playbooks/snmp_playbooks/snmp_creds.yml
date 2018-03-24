@@ -1,0 +1,2 @@
+observium:
+ - {auth: md5, auth_phrase: Sup3rH@wtn355!, priv: aes-128, priv_phrase: 0skin3rd}

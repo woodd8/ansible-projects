@@ -1,0 +1,25 @@
+---
+- name: Backup Configurations
+  gather_facts: false
+  hosts: all
+  connection: local
+  vars_files:
+  - creds.yml
+  vars:
+    creds:
+      username: "{{username}}"
+      password: "{{password}}"  
+
+  tasks:
+
+  - name: show run
+    ios_command:
+      provider: "{{creds}}"
+      commands:
+        - show run
+    register: config
+
+  - name: save output to /etc/ansible/backups
+    copy:
+      content: "{{ config.stdout[0] }}"
+      dest: "/etc/ansible/backups/{{ inventory_hostname }}_config.txt"

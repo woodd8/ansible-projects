@@ -1,5 +1,5 @@
 - name: Configure IPSec Tunnel
-  hosts: vpnrtr1
+  hosts: CDV 
   connection: local
   vars:
     cli:

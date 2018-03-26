@@ -8,7 +8,7 @@ all:
 
       ipsec_tunnels:
 
-        - tunnel_name: headend
+        - tunnel_name: Tunnel1
           seq: 20
           peer_ip: 172.16.1.2
           transform_encryption: esp-3des

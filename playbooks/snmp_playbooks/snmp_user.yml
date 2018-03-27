@@ -17,7 +17,7 @@
     creds:      
       username: "{{username_prompt}}"
       password: "{{password_prompt}}"
- 
+
 # I created a file for now that stores the SNMP settings for the observium user. This seemed like the easier option.
 
   vars_files:

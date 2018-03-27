@@ -56,3 +56,12 @@
   ios_config:
     provider: "{{ cli }}"
     src: "apply-crypto-map.j2"
+
+- name: Create Loopback Interface
+  tags: interface
+  with_items: "{{ ipsec_tunnels }}"
+  loop_control:
+    label: "{{ item.tunnel_name }}"
+  ios_config:
+    provider: "{{ cli }}"
+    src: "interfaces.j2"

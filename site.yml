@@ -1,5 +1,5 @@
 - name: Configure IPSec Crypto Map
-  hosts: CDV
+  hosts: all 
   connection: local
   gather_facts: false
 

@@ -3,3 +3,4 @@ crypto map {{ crypto_map | default('ANSIBLE_CRYPTO_MAP') }} {{ item.seq }} ipsec
  set peer {{ item.peer_ip }}
  set transform-set {{ item.tunnel_name }}_transform
  match address {{ item.tunnel_name }}_crypto_acl
+ reverse-route static

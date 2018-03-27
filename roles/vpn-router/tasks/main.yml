@@ -37,7 +37,6 @@
     lines: "{{ item.acl_lines }}"
     parents: ip access-list extended {{ item.tunnel_name }}_crypto_acl
     match: exact
-    force: true
 
 - name: Configure IPSec Crypto Map
   tags: vpn, ipsec

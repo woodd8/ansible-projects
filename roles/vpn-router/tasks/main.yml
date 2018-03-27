@@ -35,8 +35,7 @@
   ios_config:
     provider: "{{ cli }}"
     lines: "{{ item.acl_lines }}"
-    parents: ip access-list extended {{ item.tunnel_name}}_crypto_acl
-    before: no ip access-list extended {{ item.tunnel_name}}_crypto_acl
+    parents: ip access-list extended {{ item.tunnel_name }}_crypto_acl
     match: exact
 
 - name: Configure IPSec Crypto Map
@@ -49,7 +48,7 @@
     src: "crypto-map.j2"
 
 - name: Apply Crypto Map to Interfaces
-  tags: vpn, ipsec
+  tags: vpn, ipsec, interface
   with_items: "{{ ipsec_tunnels }}"
   loop_control:
     label: "{{ item.tunnel_name }}"

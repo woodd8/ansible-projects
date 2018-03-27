@@ -1,9 +1,9 @@
 all:
   hosts:
     CDV:
-      ansible_host: 10.1.1.1
+      ansible_host: 192.168.0.251
       crypto_map: VPN
-      crypto_map_interface: GigabitEthernet2
+      crypto_map_interface: GigabitEthernet0/0
       crypto_map_source_interface: Loopback0
 
       ipsec_tunnels:

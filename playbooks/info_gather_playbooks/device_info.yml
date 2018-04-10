@@ -22,6 +22,9 @@
       when: os == "nxos"
       nxos_facts:
 
+    ##
+    # Saving Data
+    ##
 
     - name: Saving facts for IOS and NXOS
       copy:
@@ -45,3 +48,4 @@
 
             {% endfor %}
         dest: info/gathered_information.txt
+...

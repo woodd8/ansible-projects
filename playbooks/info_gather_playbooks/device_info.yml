@@ -1,0 +1,48 @@
+---
+- name: "Gather Facts on Devices"
+  hosts: all
+  gather_facts: false
+  connection: local
+
+##
+# NOTE: requires a ./info directory
+##
+
+  tasks:
+
+    ##
+    # Collecting Data
+    ##
+
+    - name: Gathering facts for IOS
+      when: os == "ios"
+      ios_facts:
+
+    - name: Gathering facts for NXOS
+      when: os == "nxos"
+      nxos_facts:
+
+
+    - name: Saving facts for IOS
+      when: os == "ios"
+      copy:
+        content: |
+          #jinja2: lstrip_blocks: True
+          IOS device info:
+            {% for host in groups['IOS'] %}
+            Hostname: {{ hostvars[host].ansible_net_hostname }}
+            Version: {{ hostvars[host].ansible_net_version }}
+            Model: {{ hostvars[host].ansible_net_model }}
+            Serial: {{ hostvars[host].ansible_net_serialnum }}
+
+            {% endfor %}
+
+          NXOS device info:
+            {% for host in groups['NXOS'] %}
+            Hostname: {{ hostvars[host].ansible_net_hostname }}
+            Version: {{ hostvars[host].ansible_net_version }}
+            Model: {{ hostvars[host].ansible_net_model }}
+            Serial: {{ hostvars[host].ansible_net_serialnum }}
+
+            {% endfor %}
+        dest: info/gathered_information.txt

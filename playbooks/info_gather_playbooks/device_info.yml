@@ -23,8 +23,7 @@
       nxos_facts:
 
 
-    - name: Saving facts for IOS
-      when: os == "ios"
+    - name: Saving facts for IOS and NXOS
       copy:
         content: |
           #jinja2: lstrip_blocks: True

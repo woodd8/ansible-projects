@@ -1,0 +1,49 @@
+---
+- name: Ansible API to ThreadDB
+  hosts: localhost 
+  gather_facts: false
+  connection: local
+
+  vars:
+    base_url: #https://myapi.location.com/v1/api 
+    db_creds:
+      username: #username
+      password: #password 
+    token: "{{ token_output.json['access_token'] }}"
+    tags_filter:
+      - webserver 
+    fields_filter:
+      - fqdn
+    site_filter:
+      - SITE01
+      - SITE02
+    device_query_filter: "tags={{ tags_filter | join (',') }}&fields={{ fields_filter | join(',') }}&site.name={{ site_filter | join(',') }}"
+
+# Before you can perform GET requests to ThreadDB you must first obtain an active token. 
+# This first task does a POST to "/api/v1/auth" to obtain a token and saves the output as "token_output".
+# I've set a variable above which parses "token_output" so that we have a simpler variable called "token". 
+
+  tasks:
+
+    - name: Requesting ThreadDB Token
+      uri:
+        url: "{{ base_url }}/auth" 
+        method: POST
+        body: "{{ db_creds | to_json }}"
+        body_format: json
+      register: token_output
+
+
+    - name: Testing DEVICE FQDN GET Request to ThreadDB
+      uri:
+        url: "{{ base_url }}/devices?{{ device_query_filter }}"
+        method: GET
+        return_content: yes
+        headers:
+          Authorization: "{{ token }}"
+      register: get_test
+ 
+    - name: debug
+      with_items: "{{ get_test.json }}"
+      debug:
+        msg: "{{ item.fqdn }}"
